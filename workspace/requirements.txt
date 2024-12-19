@@ -3,3 +3,7 @@ tensorflow
 pydantic
 fastapi
 uvicorn
+numpy
+pandas
+requests
+pillow
