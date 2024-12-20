@@ -1,6 +1,15 @@
 import gdown
 import zipfile
 import os
+import pathlib
+import shutil
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.optimizers import Adamax
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import BatchNormalization, Dense, Dropout
+from tensorflow.keras import regularizers
 
 # Leer el enlace de Google Drive desde el archivo link_drive.txt
 with open('workspace/resources/datasets/dataset_medicamentos/link_drive.txt', 'r') as f:
@@ -10,12 +19,11 @@ with open('workspace/resources/models/link_drive.txt', 'r') as f:
     model_save_path = f.read().strip()
 
 # Descargar el archivo ZIP desde el link de Google Drive
-gdown.download(google_drive_link, 'dataset_medicamentos.zip', quiet=False)
-
-# Ruta donde se encuentra el archivo link_drive.txt
-# Descargar el archivo ZIP desde el enlace de Google Drive
 zip_path = 'dataset_medicamentos.zip'
 gdown.download(google_drive_link, zip_path, quiet=False)
+
+# Definir la ruta para extraer el contenido
+data_dir = 'workspace/resources/datasets/dataset_medicamentos/'
 
 print(zip_path)
 print(data_dir)
@@ -27,7 +35,7 @@ with zipfile.ZipFile(zip_path, 'r') as zip_ref:
 # Verificación de que los archivos fueron extraídos
 print(f'Contenido extraído: {os.listdir(data_dir)}')
 
-# Ruta de las imágenes extraídas
+# Convertir la ruta de data_dir a un objeto pathlib.Path
 data_dir = pathlib.Path(data_dir)
 
 # Crear listas para las rutas de los archivos e imágenes
@@ -80,10 +88,6 @@ channels = 3
 img_shape = (img_size[0], img_size[1], channels)
 class_count = len(list(train_df['labels'].unique()))
 
-# Data Augmentation (función de ejemplo)
-def scalar(img):
-    return img
-
 # Cargar generadores de imágenes
 train_datagen = ImageDataGenerator(rescale=1./255, shear_range=0.2, zoom_range=0.2, horizontal_flip=True)
 train_gen = train_datagen.flow_from_dataframe(dataframe=train_df, x_col='filepaths', y_col='labels', 
@@ -116,16 +120,5 @@ history = model.fit(x=train_gen, epochs=epochs, validation_data=valid_gen, verbo
 # Guardar el modelo en Google Drive
 model.save(model_save_path + '/Drug_Name.h5')
 print(f'Modelo guardado en: {model_save_path}')
-# Verificar si el archivo descargado es un ZIP válido
-try:
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        zip_ref.testzip()  # Verifica que el archivo ZIP no esté dañado
-        print("El archivo ZIP es válido.")
-        zip_ref.extractall('workspace/resources/datasets/dataset_medicamentos/')
-        print(f'Contenido extraído: {os.listdir("workspace/resources/datasets/dataset_medicamentos/")}')
-except zipfile.BadZipFile:
-    print(f'Error: El archivo descargado no es un archivo ZIP válido. Verifica el enlace de Google Drive.')
-except Exception as e:
-    print(f'Ocurrió un error al intentar abrir el archivo ZIP: {e}')
 
 
