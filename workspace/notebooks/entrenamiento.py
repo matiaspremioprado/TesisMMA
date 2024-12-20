@@ -57,8 +57,9 @@ for fold in folds:
                 labels.append(fold)
 
 # Guardar las carpetas en workspace/resources/datasets
-output_dataset_path = 'workspace/resources/datasets/sorted_images/'
+output_dataset_path = 'workspace/resources/datasets/output_images/'
 os.makedirs(output_dataset_path, exist_ok=True)
+
 
 for i, filepath in enumerate(filepaths):
     label = labels[i]
