@@ -33,10 +33,15 @@ with open('workspace/resources/models/link_drive.txt', 'r') as f:
 # Descargar el archivo ZIP desde el link de Google Drive
 gdown.download(google_drive_link, 'dataset_medicamentos.zip', quiet=False)
 
-# Extraer el archivo ZIP
+# Ruta donde se encuentra el archivo link_drive.txt
+link_file_path = 'workspace/resources/datasets/dataset_medicamentos/link_drive.txt'
 zip_path = 'dataset_medicamentos.zip'
 data_dir = 'workspace/resources/datasets/dataset_medicamentos/'
 
+print(zip_path)
+print(data_dir)
+
+# Extraer el archivo ZIP
 with zipfile.ZipFile(zip_path, 'r') as zip_ref:
     zip_ref.extractall(data_dir)
 
