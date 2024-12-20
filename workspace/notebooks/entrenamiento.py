@@ -26,9 +26,6 @@ gdown.download(google_drive_link, zip_path, quiet=False)
 # Definir la ruta para extraer el contenido
 data_dir = 'workspace/resources/datasets/dataset_medicamentos/'
 
-print(zip_path)
-print(data_dir)
-
 # Extraer el archivo ZIP
 with zipfile.ZipFile(zip_path, 'r') as zip_ref:
     zip_ref.extractall(data_dir)
@@ -60,14 +57,23 @@ for fold in folds:
 output_dataset_path = 'workspace/resources/datasets/output_images/'
 os.makedirs(output_dataset_path, exist_ok=True)
 
+# Crear las carpetas base para train, valid y test
+train_path = os.path.join(output_dataset_path, 'train')
+valid_path = os.path.join(output_dataset_path, 'valid')
+test_path = os.path.join(output_dataset_path, 'test')
 
-for i, filepath in enumerate(filepaths):
-    label = labels[i]
-    label_folder = os.path.join(output_dataset_path, label)
-    os.makedirs(label_folder, exist_ok=True)
-    shutil.copy(filepath, os.path.join(label_folder, os.path.basename(filepath)))
+# Crear las carpetas si no existen
+os.makedirs(train_path, exist_ok=True)
+os.makedirs(valid_path, exist_ok=True)
+os.makedirs(test_path, exist_ok=True)
 
-print(f'Imágenes guardadas en carpetas dentro de {output_dataset_path}')
+# Función para mover las imágenes a las carpetas correspondientes
+def save_images_to_folders(df, output_path):
+    for i, filepath in enumerate(df['filepaths']):
+        label = df['labels'].iloc[i]
+        label_folder = os.path.join(output_path, label)
+        os.makedirs(label_folder, exist_ok=True)  # Crear carpeta por clase si no existe
+        shutil.copy(filepath, os.path.join(label_folder, os.path.basename(filepath)))
 
 # Concatenar las rutas de las imágenes y las etiquetas en un DataFrame
 Fseries = pd.Series(filepaths, name= 'filepaths')
@@ -83,11 +89,17 @@ print(f"Training set size: {len(train_df)}")
 print(f"Validation set size: {len(valid_df)}")
 print(f"Test set size: {len(test_df)}")
 
-# Tamaño de la imagen y parámetros del modelo
-batch_size = 64
+# Guardar imágenes de entrenamiento, validación y prueba
+save_images_to_folders(train_df, train_path)
+save_images_to_folders(valid_df, valid_path)
+save_images_to_folders(test_df, test_path)
+
+print(f'Imágenes guardadas en las carpetas correspondientes dentro de {output_dataset_path}')
+
+# Modelado del modelo EfficientNetB1
 img_size = (224, 224)
-channels = 3
-img_shape = (img_size[0], img_size[1], channels)
+img_shape = (img_size[0], img_size[1], 3)
+batch_size = 64
 class_count = len(list(train_df['labels'].unique()))
 
 # Cargar generadores de imágenes
