@@ -54,7 +54,7 @@ for fold in folds:
                 labels.append(fold)
 
 # Guardar las carpetas en workspace/resources/datasets
-output_dataset_path = 'workspace/resources/datasets/output_images/'
+output_dataset_path = 'workspace/resources/datasets/output_folders/'
 os.makedirs(output_dataset_path, exist_ok=True)
 
 # Crear las carpetas base para train, valid y test
