@@ -34,7 +34,6 @@ with open('workspace/resources/models/link_drive.txt', 'r') as f:
 gdown.download(google_drive_link, 'dataset_medicamentos.zip', quiet=False)
 
 # Ruta donde se encuentra el archivo link_drive.txt
-link_file_path = 'workspace/resources/datasets/dataset_medicamentos/link_drive.txt'
 zip_path = 'dataset_medicamentos.zip'
 data_dir = 'workspace/resources/datasets/dataset_medicamentos/'
 
@@ -55,15 +54,18 @@ data_dir = pathlib.Path(data_dir)
 filepaths = []
 labels = []
 
-# Crear el DataFrame con las rutas y etiquetas
+# Filtrar para excluir archivos no válidos como .gitkeep
 folds = os.listdir(data_dir)
 for fold in folds:
     foldpath = os.path.join(data_dir, fold)
-    filelist = os.listdir(foldpath)
-    for file in filelist:
-        fpath = os.path.join(foldpath, file)
-        filepaths.append(fpath)
-        labels.append(fold)
+    if os.path.isdir(foldpath):  # Verificar si es un directorio
+        filelist = os.listdir(foldpath)
+        for file in filelist:
+            # Excluir .gitkeep u otros archivos no deseados
+            if not file.startswith('.') and os.path.isfile(os.path.join(foldpath, file)):
+                fpath = os.path.join(foldpath, file)
+                filepaths.append(fpath)
+                labels.append(fold)
 
 # Concatenar las rutas de las imágenes y las etiquetas en un DataFrame
 Fseries = pd.Series(filepaths, name= 'filepaths')
@@ -71,8 +73,8 @@ Lseries = pd.Series(labels, name='labels')
 df = pd.concat([Fseries, Lseries], axis= 1)
 
 # División en conjuntos de entrenamiento, validación y prueba
-train_df, dummy_df = train_test_split(df,  train_size= 0.8, shuffle= True, random_state= 123)
-valid_df, test_df = train_test_split(dummy_df,  train_size= 0.6, shuffle= True, random_state= 123)
+train_df, dummy_df = train_test_split(df, train_size=0.8, shuffle=True, random_state=123)
+valid_df, test_df = train_test_split(dummy_df, train_size=0.6, shuffle=True, random_state=123)
 
 # Verificación de la división de los datos
 print(f"Training set size: {len(train_df)}")
@@ -122,4 +124,3 @@ history = model.fit(x=train_gen, epochs=epochs, validation_data=valid_gen, verbo
 # Guardar el modelo en Google Drive
 model.save(model_save_path + '/Drug_Name.h5')
 print(f'Modelo guardado en: {model_save_path}')
-
