@@ -1,5 +1,3 @@
-pip install tensorflow==2.9.1 opencv-python numpy pandas seaborn matplotlib
-
 # System Libs
 import gdown
 import os
