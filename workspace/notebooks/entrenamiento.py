@@ -5,6 +5,7 @@ import pathlib
 import shutil
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import tensorflow as tf
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.optimizers import Adamax
 from tensorflow.keras.models import Sequential
@@ -120,5 +121,3 @@ history = model.fit(x=train_gen, epochs=epochs, validation_data=valid_gen, verbo
 # Guardar el modelo en Google Drive
 model.save(model_save_path + '/Drug_Name.h5')
 print(f'Modelo guardado en: {model_save_path}')
-
-
