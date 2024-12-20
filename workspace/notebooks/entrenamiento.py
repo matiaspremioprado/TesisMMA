@@ -67,6 +67,18 @@ for fold in folds:
                 filepaths.append(fpath)
                 labels.append(fold)
 
+# Guardar las carpetas en workspace/resources/datasets
+output_dataset_path = 'workspace/resources/datasets/sorted_images/'
+os.makedirs(output_dataset_path, exist_ok=True)
+
+for i, filepath in enumerate(filepaths):
+    label = labels[i]
+    label_folder = os.path.join(output_dataset_path, label)
+    os.makedirs(label_folder, exist_ok=True)
+    shutil.copy(filepath, os.path.join(label_folder, os.path.basename(filepath)))
+
+print(f'Imágenes guardadas en carpetas dentro de {output_dataset_path}')
+
 # Concatenar las rutas de las imágenes y las etiquetas en un DataFrame
 Fseries = pd.Series(filepaths, name= 'filepaths')
 Lseries = pd.Series(labels, name='labels')
