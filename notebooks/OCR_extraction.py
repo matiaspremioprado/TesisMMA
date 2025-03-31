@@ -1,6 +1,8 @@
 import os
 import random
 import base64
+import json
+from pathlib import Path
 import pandas as pd
 from together import Together
 from tqdm import tqdm
@@ -18,13 +20,30 @@ PROMPT_INSTRUCCIONES = "Extract JUST the full medication title, don't add anythi
 
 
 def verificar_api_key():
-    """Verifica y muestra el estado de la API Key"""
-    api_key = os.getenv("TOGETHER_API_KEY")
-    print("\n🔑 Estado de la API Key:", "Cargada correctamente" if api_key else "No encontrada")
+    """Verifica y muestra el estado de la API Key leyendo desde un archivo JSON"""
+    # Definir la ruta al archivo de credenciales
+    credenciales_path = Path("workspace/resources/credentials/ocr_credentials.json")
     
-    if not api_key:
-        raise ValueError("La variable 'TOGETHER_API_KEY' no está configurada.")
-    return api_key
+    try:
+        # Leer el archivo JSON
+        with open(credenciales_path, 'r') as f:
+            credenciales = json.load(f)
+        
+        # Obtener la API key
+        api_key = credenciales.get("TOGETHER_API_KEY")
+        
+        print("\n🔑 Estado de la API Key:", "Cargada correctamente" if api_key else "No encontrada en el JSON")
+        
+        if not api_key:
+            raise ValueError("La clave 'TOGETHER_API_KEY' no está presente en el archivo JSON.")
+        return api_key
+    
+    except FileNotFoundError:
+        print(f"\n❌ Error: No se encontró el archivo de credenciales en {credenciales_path}")
+        raise
+    except json.JSONDecodeError:
+        print(f"\n❌ Error: El archivo {credenciales_path} no es un JSON válido")
+        raise
 
 def listar_modelos_vision(client):
     """Lista los modelos de visión disponibles"""
