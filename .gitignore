@@ -1,5 +1,7 @@
-datasets/
-outputs/
-models/
-"resources/credentials/google_drive_*.json" 
-resources/credentials/google_drive_*.json 
+# Archivos de credenciales
+workspace/resources/credentials/ocr_credentials.json
+workspace/resources/credentials/*.json
+
+# Entornos virtuales
+venv/
+.env/
