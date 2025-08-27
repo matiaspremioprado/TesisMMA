@@ -1,12 +1,12 @@
-﻿# Tesis MMA – Validación de Medicamentos
+﻿# Tesis MMA – Proyecto de Validación de Medicamentos
 
-Este repositorio contiene el código y recursos principales de la tesis relacionados con el procesamiento de imágenes, el uso de modelos en AWS Lambda mediante Docker y la organización general del proyecto.
+Este repositorio contiene los recursos de backend, modelos y scripts utilizados en el proyecto de validación de medicamentos mediante procesamiento de imágenes y despliegue en AWS Lambda con Docker. 
 
 ---
 
 ## 📂 Notebooks y Datasets
 
-Las notebooks de experimentación y los datasets utilizados en el proyecto se encuentran en la siguiente carpeta de Google Drive:  
+La notebook principal y los datasets se encuentran en la siguiente carpeta de Google Drive. La notebook ya está configurada para vincularse a la carpeta que contiene los archivos .zip con las imágenes:  
 
 👉 [Carpeta compartida en Google Drive](https://drive.google.com/drive/u/0/folders/1yg2mTNCvHuE2C_PPlhhzMm9Xf7T6MWhw?q=sharedwith:public%20parent:1yg2mTNCvHuE2C_PPlhhzMm9Xf7T6MWhw)
 
@@ -27,7 +27,6 @@ Cada subcarpeta corresponde a una función específica (por ejemplo, OCR, conver
 
 ---
 
-✍️ *Este repositorio se centra en la parte de backend, infra y experimentación. Para ejecutar los notebooks, asegúrese de descargar previamente los datasets desde Google Drive.*
+## 📄 Documento de la tesis
 
-📄 **Documento de la tesis:**  
-En este repositorio también se incluye el documento principal de la tesis, que contiene la propuesta de valor del proyecto, la documentación técnica del modelo y la infraestructura, así como el análisis financiero y económico relacionado con la implementación.
+En este repositorio también se incluye el documento principal de la tesis, que abarca la propuesta de valor del proyecto, la documentación técnica del modelo y la infraestructura, así como el análisis financiero y económico relacionado con la implementación.
