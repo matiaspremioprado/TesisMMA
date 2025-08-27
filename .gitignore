@@ -1,7 +1,0 @@
-# Archivos de credenciales
-workspace/resources/credentials/ocr_credentials.json
-workspace/resources/credentials/*.json
-
-# Entornos virtuales
-venv/
-.env/
