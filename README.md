@@ -28,3 +28,6 @@ Cada subcarpeta corresponde a una función específica (por ejemplo, OCR, conver
 ---
 
 ✍️ *Este repositorio se centra en la parte de backend, infra y experimentación. Para ejecutar los notebooks, asegúrese de descargar previamente los datasets desde Google Drive.*
+
+📄 **Documento de la tesis:**  
+En este repositorio también se incluye el documento principal de la tesis, que contiene la propuesta de valor del proyecto, la documentación técnica del modelo y la infraestructura, así como el análisis financiero y económico relacionado con la implementación.
